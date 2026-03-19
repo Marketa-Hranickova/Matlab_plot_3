@@ -1,36 +1,63 @@
 clear; close all; clc;
 
-p = parameters_3(); 
 t_span = [0 10]; 
-y0 = [1; 1; 1; 1]; % Initial contitions
+y0 = [1; 1; 1; 1]; 
+p = parameters_3(); 
+
+% SIMPLE MODEL
+[ts, ys] = ode45(@(t,y) simple_plot_3(t,y,p), t_span, y0);
+
+% CASE 1
+p1 = p; p1.case_type = 1;
+[t1, y1] = ode15s(@(t,y) complex_3(t,y,p1), t_span, y0);
+
+%CASE 2
+p2 = p; p2.case_type = 2;
+[t2, y2] = ode15s(@(t,y) complex_3(t,y,p2), t_span, y0);
+
+% --- PLOTS CASE 1---
+figure('Name', 'Simple vs Case 1', 'Color', 'w');
+
+subplot(2,2,1); 
+plot(ts, ys(:,1), 'g', 'LineWidth', 1.5); hold on;
+plot(t1, y1(:,1), 'b--', 'LineWidth', 1.2);
+title('x_1(t)'); grid on; legend('Simple', 'Case 1');
+
+subplot(2,2,2); 
+plot(ts, ys(:,2), 'g', 'LineWidth', 1.5); hold on;
+plot(t1, y1(:,2), 'b--', 'LineWidth', 1.2);
+title('x_2(t)'); grid on;
+
+subplot(2,2,3); 
+plot(ts, ys(:,3), 'g', 'LineWidth', 1.5); hold on;
+plot(t1, y1(:,3), 'b--', 'LineWidth', 1.2);
+title('v_1(t)'); grid on;
+
+subplot(2,2,4); 
+plot(ts, ys(:,4), 'g', 'LineWidth', 1.5); hold on;
+plot(t1, y1(:,4), 'b--', 'LineWidth', 1.2);
+title('v_2(t)'); grid on;
 
 
-[t, y] = ode45(@(t,y) simple_plot_3(t,y,p), t_span, y0);
-[t2, y2] = ode45(@(t,y) simple_plot_3(t,y,p), t_span, y0);
+% --- PLOTS CASE 2 ---
+figure('Name', 'Simple vs Case 2', 'Color', 'w');
 
+subplot(2,2,1); 
+plot(ts, ys(:,1), 'g', 'LineWidth', 1.5); hold on;
+plot(t2, y2(:,1), 'r--', 'LineWidth', 1.2);
+title('x_1(t)'); grid on; legend('Simple', 'Case 2');
 
-x1 = y(:,1); x2 = y(:,2);
-v1 = y(:,3); v2 = y(:,4);
-abs_x = sqrt(x1.^2 + x2.^2);
-abs_v = sqrt(v1.^2 + v2.^2);
-J = arrayfun(@(i) p.J(x1(i), x2(i), p.a, p.b), 1:length(t));
+subplot(2,2,2); 
+plot(ts, ys(:,2), 'g', 'LineWidth', 1.5); hold on;
+plot(t2, y2(:,2), 'r--', 'LineWidth', 1.2);
+title('x_2(t)'); grid on;
 
-% --- PLOTS ---
+subplot(2,2,3); 
+plot(ts, ys(:,3), 'g', 'LineWidth', 1.5); hold on;
+plot(t2, y2(:,3), 'r--', 'LineWidth', 1.2);
+title('v_1(t)'); grid on;
 
-% 1. Graf: Jednotlivé stavy x a v
-figure('Name', 'Systems', 'Color', 'w');
-subplot(2,2,1); plot(t, x1, 'b', 'LineWidth', 1.5); title('x_1(t)'); grid on;
-subplot(2,2,2); plot(t, x2, 'r', 'LineWidth', 1.5); title('x_2(t)'); grid on;
-subplot(2,2,3); plot(t, v1, 'g', 'LineWidth', 1.5); title('v_1(t)'); grid on;
-subplot(2,2,4); plot(t, v2, 'm', 'LineWidth', 1.5); title('v_2(t)'); grid on;
-
-% 2. Graf: Absolutní hodnoty (Normy)
-figure('Name', 'Norms', 'Color', 'w');
-subplot(2,1,1); plot(t, abs_x, 'r', 'LineWidth', 2); title('||x(t)||_2'); grid on;
-subplot(2,1,2); plot(t, abs_v, 'color', [0.5 0.5 0.5], 'LineWidth', 2); title('||v(t)||_2'); grid on;
-
-% 3. Graf: Účelová funkce J
-figure('Name', 'Function J', 'Color', 'w');
-plot(t, J, 'LineWidth', 2, 'Color', [0 .5 0]);
-title('J(t)');
-xlabel('t [s]'); ylabel('J'); grid on;
+subplot(2,2,4); 
+plot(ts, ys(:,4), 'g', 'LineWidth', 1.5); hold on;
+plot(t2, y2(:,4), 'r--', 'LineWidth', 1.2);
+title('v_2(t)'); grid on;
