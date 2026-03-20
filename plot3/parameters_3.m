@@ -10,6 +10,6 @@ function p = parameters_3()
     p.beta = [1; 1];
     p.eps = 1e-3;
     p.k = [1; 2; 3; 4; 5; 6]; 
-    p.d = 1e-2;
+    p.d = 1e-3;
     p.omega = (2 * pi)/p.d;
 end

@@ -62,39 +62,17 @@ plot(ts, ys(:,4), 'g', 'LineWidth', 1.5); hold on;
 plot(t2, y2(:,4), 'r--', 'LineWidth', 1.2);
 title('v_2(t)'); grid on;
 
-
-% --- PLOT NORMS ---
-figure('Name','Vector norms','Color','w');
-
-% --- ||x|| ---
+% --- PLOT ABSOLUTE VALUES ---
+figure('Name','Absolute values','Color','w');
 subplot(2,1,1);
+plot(ts, abs(ys(:,1)), 'g', 'LineWidth',1.5); hold on;
+plot(ts, abs(ys(:,2)), 'b', 'LineWidth',1.5);
+title('|x_1| & |x_2|'); grid on; legend('|x_1|','|x_2|');
 
-norm_x_simple = sqrt(ys(:,1).^2 + ys(:,2).^2);
-norm_x_case1  = sqrt(y1(:,1).^2 + y1(:,2).^2);
-norm_x_case2  = sqrt(y2(:,1).^2 + y2(:,2).^2);
-
-plot(ts, norm_x_simple, 'g', 'LineWidth',1.5); hold on;
-plot(t1, norm_x_case1,  'b', 'LineWidth',1.2);
-plot(t2, norm_x_case2,  'r--', 'LineWidth',1.2);
-
-title('||x|| = sqrt(x_1^2 + x_2^2)');
-grid on;
-legend('Simple','Case 1','Case 2');
-
-% --- ||v|| ---
 subplot(2,1,2);
-
-norm_v_simple = sqrt(ys(:,3).^2 + ys(:,4).^2);
-norm_v_case1  = sqrt(y1(:,3).^2 + y1(:,4).^2);
-norm_v_case2  = sqrt(y2(:,3).^2 + y2(:,4).^2);
-
-plot(ts, norm_v_simple, 'g', 'LineWidth',1.5); hold on;
-plot(t1, norm_v_case1,  'b', 'LineWidth',1.2);
-plot(t2, norm_v_case2,  'r--', 'LineWidth',1.2);
-
-title('||v|| = sqrt(v_1^2 + v_2^2)');
-grid on;
-legend('Simple','Case 1','Case 2');
+plot(ts, abs(ys(:,3)), 'g', 'LineWidth',1.5); hold on;
+plot(ts, abs(ys(:,4)), 'b', 'LineWidth',1.5);
+title('|v_1| & |v_2|'); grid on; legend('|v_1|','|v_2|');
 
 % --- PLOT FUNCTION J(x1,x2) ---
 J_simple = arrayfun(@(i) p.J(ys(i,1), ys(i,2), p.a, p.b), 1:length(ts));
@@ -103,8 +81,8 @@ J_case2  = arrayfun(@(i) p.J(y2(i,1), y2(i,2), p.a, p.b), 1:length(t2));
 
 figure('Name','Function J','Color','w');
 plot(ts, J_simple, 'g', 'LineWidth',1.5); hold on;
-plot(t1, J_case1, 'b', 'LineWidth',1.2);
-plot(t2, J_case2, 'r--', 'LineWidth',1.2);
+%plot(t1, J_case1, 'b', 'LineWidth',1.2);
+%plot(t2, J_case2, 'r--', 'LineWidth',1.2);
 title('J(x_1,x_2)'); grid on; legend('Simple','Case 1','Case 2');
 xlabel('t');
 ylabel('J');
